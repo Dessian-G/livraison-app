@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bleu: #1E6FD9;
+  --color-vert: #1FA85A;
+  --color-blanc: #FFFFFF;
+  --color-gris-bg: #F4F6F8;
+  --color-texte: #1A2330;
+  --color-bleu-dark: #1558B0;
+  --color-vert-dark: #177A43;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    background-color: #F4F6F8;
+    color: #1A2330;
+    font-family: system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #root {
+    min-height: 100svh;
+  }
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  z-index: 0;
+}

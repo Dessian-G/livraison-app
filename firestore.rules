@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/utilisateurs/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isLivreur() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/utilisateurs/$(request.auth.uid)).data.role == 'livreur';
+    }
+
+    // Produits : lecture publique, écriture admin ; exception : n'importe qui peut
+    // modifier uniquement le champ stock (décrément à la commande, incrément à l'annulation)
+    match /produits/{id} {
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock']);
+    }
+
+    // Commandes : création publique, lecture/maj admin et livreur, annulation client
+    match /commandes/{id} {
+      allow create: if true;
+      allow read: if isAdmin() || isLivreur() || true; // lecture publique pour le suivi par ID
+      allow update: if isAdmin()
+        || (isLivreur() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['statut', 'livreurId']))
+        || (resource.data.statut == 'en_attente' && request.resource.data.statut == 'annulée');
+      allow delete: if isAdmin();
+    }
+
+    // Compteurs : lecture/écriture dans le cadre des transactions
+    match /compteurs/{id} {
+      allow read, write: if true;
+    }
+
+    // Quartiers : lecture publique, écriture admin
+    match /quartiers/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Livreurs : admin seulement
+    match /livreurs/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    // Utilisateurs : chacun peut lire son propre doc ; création autorisée (compte livreur)
+    match /utilisateurs/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null;
+      allow update, delete: if isAdmin();
+    }
+
+    // Paramètres : lecture publique, création initiale libre, mise à jour admin
+    match /parametres/{id} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+  }
+}
