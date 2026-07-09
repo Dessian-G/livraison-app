@@ -18,7 +18,7 @@ export default function AdminNav() {
           to={l.to}
           end={l.end}
           className={({ isActive }) =>
-            `flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition ${isActive ? 'bg-bleu text-white' : 'bg-white text-texte hover:bg-bleu/10'}`
+            `flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition ${isActive ? 'bg-orange text-white' : 'bg-white text-texte hover:bg-orange/10'}`
           }
         >
           {l.icon} {l.label}

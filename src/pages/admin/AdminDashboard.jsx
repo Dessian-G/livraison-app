@@ -46,7 +46,7 @@ export default function AdminDashboard() {
         <StatCard icon={Clock} label="En attente" value={enAttente} color="bg-yellow-50 text-yellow-700" />
         <StatCard icon={Truck} label="En livraison" value={enLivraison} color="bg-blue-50 text-blue-700" />
         <StatCard icon={CheckCircle} label="Livrées (today)" value={livreesJour} color="bg-green-50 text-green-700" />
-        <StatCard icon={TrendingUp} label="CA du jour" value={`${chiffreDuJour.toLocaleString()} F`} color="bg-bleu/5 text-bleu" />
+        <StatCard icon={TrendingUp} label="CA du jour" value={`${chiffreDuJour.toLocaleString()} F`} color="bg-orange/5 text-orange" />
       </div>
 
       {/* Dernières commandes */}
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
                 <p className="text-xs text-gray-400">{formatDate(c.date)} · {c.client?.quartier}</p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <span className="font-bold text-sm text-bleu">{c.total?.toLocaleString()} F</span>
+                <span className="font-bold text-sm text-orange">{c.total?.toLocaleString()} F</span>
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${st.color}`}>{st.label}</span>
               </div>
             </div>

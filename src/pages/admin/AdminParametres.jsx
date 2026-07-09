@@ -138,20 +138,20 @@ export default function AdminParametres() {
           <div>
             <label className="block text-sm font-medium text-texte mb-1">Nom du business</label>
             <input type="text" value={form.nomBusiness} onChange={e => setForm(f => ({ ...f, nomBusiness: e.target.value }))}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30" />
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30" />
           </div>
           <div>
             <label className="block text-sm font-medium text-texte mb-1">Numéro WhatsApp admin</label>
             <input type="text" value={form.whatsappAdmin} onChange={e => setForm(f => ({ ...f, whatsappAdmin: e.target.value }))}
               placeholder="Ex: 2250700000000"
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30" />
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30" />
             <p className="text-xs text-gray-400 mt-1">Format international sans +. Ex : 2250700000000</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-texte mb-1">Clé API CallMeBot</label>
             <input type="text" value={form.callmebotApiKey} onChange={e => setForm(f => ({ ...f, callmebotApiKey: e.target.value }))}
               placeholder="Ex: 1234567"
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30" />
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30" />
             <p className="text-xs text-gray-400 mt-1">
               Activez CallMeBot : envoyez <strong>«&nbsp;I allow callmebot to send me messages&nbsp;»</strong> au +34 644 60 49 23 sur WhatsApp.
             </p>
@@ -186,7 +186,7 @@ export default function AdminParametres() {
                 <input type="number" step="any" value={form[f.name]}
                   onChange={e => setForm(p => ({ ...p, [f.name]: e.target.value }))}
                   placeholder={f.placeholder}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30" />
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30" />
               </div>
             ))}
           </div>
@@ -194,7 +194,7 @@ export default function AdminParametres() {
         </div>
 
         <button type="submit" disabled={loading}
-          className={`w-full py-3 rounded-xl font-bold text-white transition flex items-center justify-center gap-2 disabled:opacity-60 ${saved ? 'bg-vert' : 'bg-bleu hover:bg-bleu-dark'}`}>
+          className={`w-full py-3 rounded-xl font-bold text-white transition flex items-center justify-center gap-2 disabled:opacity-60 ${saved ? 'bg-vert' : 'bg-orange hover:bg-orange-dark'}`}>
           {loading ? <Loader size={18} className="animate-spin" /> : <Save size={18} />}
           {loading ? 'Sauvegarde...' : saved ? 'Sauvegardé !' : 'Sauvegarder'}
         </button>
@@ -205,7 +205,7 @@ export default function AdminParametres() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-semibold text-texte">Quartiers & frais de livraison</h2>
           <button onClick={ouvrirNouveauQuartier}
-            className="flex items-center gap-1 bg-bleu text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-bleu-dark transition">
+            className="flex items-center gap-1 bg-orange text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-orange-dark transition">
             <Plus size={15} /> Ajouter
           </button>
         </div>
@@ -220,7 +220,7 @@ export default function AdminParametres() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => ouvrirModifierQuartier(q)} className="text-gray-400 hover:text-bleu transition"><Pencil size={16} /></button>
+                <button onClick={() => ouvrirModifierQuartier(q)} className="text-gray-400 hover:text-orange transition"><Pencil size={16} /></button>
                 <button onClick={() => handleDeleteQuartier(q.id)} className="text-gray-400 hover:text-red-500 transition"><Trash2 size={16} /></button>
               </div>
             </div>
@@ -241,28 +241,28 @@ export default function AdminParametres() {
                 <label className="block text-sm font-medium text-texte mb-1">Nom du quartier *</label>
                 <input type="text" value={formQ.nom} onChange={e => setFormQ(f => ({ ...f, nom: e.target.value }))}
                   placeholder="Ex: Cocody Angré"
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30" />
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-texte mb-1">Frais de livraison (FCFA)</label>
                 <input type="number" value={formQ.fraisLivraison} onChange={e => setFormQ(f => ({ ...f, fraisLivraison: e.target.value }))}
                   placeholder="0 = gratuit"
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30" />
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-texte mb-1">Ordre d'affichage</label>
                 <input type="number" value={formQ.ordre} onChange={e => setFormQ(f => ({ ...f, ordre: e.target.value }))}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30" />
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30" />
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={formQ.actif} onChange={e => setFormQ(f => ({ ...f, actif: e.target.checked }))} className="w-4 h-4 accent-bleu" />
+                <input type="checkbox" checked={formQ.actif} onChange={e => setFormQ(f => ({ ...f, actif: e.target.checked }))} className="w-4 h-4 accent-orange" />
                 <span className="text-sm text-texte">Quartier actif (visible pour les clients)</span>
               </label>
             </div>
             <div className="p-5 border-t flex gap-3">
               <button onClick={() => setModalQ(null)} className="flex-1 border border-gray-200 text-texte py-2.5 rounded-xl text-sm hover:bg-gray-50 transition">Annuler</button>
               <button onClick={handleSaveQuartier} disabled={loadingQ}
-                className="flex-1 bg-bleu text-white py-2.5 rounded-xl text-sm font-medium hover:bg-bleu-dark transition flex items-center justify-center gap-2 disabled:opacity-60">
+                className="flex-1 bg-orange text-white py-2.5 rounded-xl text-sm font-medium hover:bg-orange-dark transition flex items-center justify-center gap-2 disabled:opacity-60">
                 {loadingQ ? <Loader size={16} className="animate-spin" /> : null}
                 {loadingQ ? 'Sauvegarde...' : 'Sauvegarder'}
               </button>

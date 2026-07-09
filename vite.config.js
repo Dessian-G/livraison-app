@@ -11,10 +11,10 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Livraison App',
-        short_name: 'Livraison',
+        name: 'Mon Commerce',
+        short_name: 'Mon Commerce',
         description: 'Application de commande et livraison',
-        theme_color: '#1E6FD9',
+        theme_color: '#EA580C',
         background_color: '#FFFFFF',
         display: 'standalone',
         scope: '/',

@@ -20,9 +20,9 @@ export default function Confirmation() {
       <h1 className="text-2xl font-bold text-texte mb-2">Commande envoyée !</h1>
 
       {numero && (
-        <div className="bg-bleu/5 border border-bleu/20 rounded-xl px-6 py-3 mb-4">
+        <div className="bg-orange/5 border border-orange/20 rounded-xl px-6 py-3 mb-4">
           <p className="text-xs text-gray-500 mb-1">Numéro de commande</p>
-          <p className="text-2xl font-bold text-bleu">{numero}</p>
+          <p className="text-2xl font-bold text-orange">{numero}</p>
         </div>
       )}
 
@@ -39,7 +39,7 @@ export default function Confirmation() {
       <div className="flex flex-col gap-3 w-full max-w-xs">
         {id && (
           <Link to={`/suivi/${id}`}
-            className="flex items-center justify-center gap-2 bg-bleu text-white px-6 py-3 rounded-xl font-semibold hover:bg-bleu-dark transition">
+            className="flex items-center justify-center gap-2 bg-orange text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-dark transition">
             <Eye size={18} /> Suivre ma commande
           </Link>
         )}

@@ -39,7 +39,7 @@ export default function Catalogue() {
 
   if (loading) return (
     <div className="flex justify-center py-20">
-      <div className="w-8 h-8 border-4 border-bleu border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-orange border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
@@ -49,14 +49,14 @@ export default function Catalogue() {
         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         <input type="text" value={recherche} onChange={e => setRecherche(e.target.value)}
           placeholder="Rechercher un produit..."
-          className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-bleu/30 bg-white" />
+          className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange/30 bg-white" />
       </div>
 
       {categories.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-2 mb-5 -mx-4 px-4">
           {categories.map(cat => (
             <button key={cat} onClick={() => setCategorieActive(cat)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition shrink-0 ${categorieActive === cat ? 'bg-bleu text-white' : 'bg-white text-gray-500 hover:bg-bleu/5'}`}>
+              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition shrink-0 ${categorieActive === cat ? 'bg-orange text-white' : 'bg-white text-gray-500 hover:bg-orange/5'}`}>
               {cat}
             </button>
           ))}
@@ -86,15 +86,15 @@ export default function Catalogue() {
               </Link>
               <div className="p-3 flex flex-col flex-1">
                 {p.categorie && <span className="text-[10px] text-gray-400 uppercase tracking-wide">{p.categorie}</span>}
-                <Link to={`/produit/${p.id}`} className="font-semibold text-texte text-sm leading-tight hover:text-bleu transition line-clamp-2 mt-0.5">
+                <Link to={`/produit/${p.id}`} className="font-semibold text-texte text-sm leading-tight hover:text-orange transition line-clamp-2 mt-0.5">
                   {p.nom}
                 </Link>
-                <p className="text-bleu font-bold mt-1 text-sm">{p.prix.toLocaleString()} FCFA</p>
+                <p className="text-orange font-bold mt-1 text-sm">{p.prix.toLocaleString()} FCFA</p>
                 {p.stock !== null && p.stock > 0 && p.stock <= 5 && (
                   <p className="text-xs text-orange-500 font-medium">Stock faible : {p.stock} restant{p.stock > 1 ? 's' : ''}</p>
                 )}
                 <button onClick={e => handleAjouter(e, p)} disabled={stockNul}
-                  className={`mt-auto w-full flex items-center justify-center gap-1 py-2 rounded-lg text-sm font-medium transition ${stockNul ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ajoutIds[p.id] ? 'bg-vert text-white' : 'bg-bleu text-white hover:bg-bleu-dark'}`}>
+                  className={`mt-auto w-full flex items-center justify-center gap-1 py-2 rounded-lg text-sm font-medium transition ${stockNul ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ajoutIds[p.id] ? 'bg-vert text-white' : 'bg-orange text-white hover:bg-orange-dark'}`}>
                   <ShoppingCart size={15} />
                   {stockNul ? 'Indisponible' : ajoutIds[p.id] ? 'Ajouté !' : 'Ajouter'}
                 </button>

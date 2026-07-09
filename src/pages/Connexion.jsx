@@ -35,7 +35,7 @@ export default function Connexion() {
 
   if (authLoading) return (
     <div className="flex justify-center py-20">
-      <div className="w-8 h-8 border-4 border-bleu border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-orange border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
@@ -54,7 +54,7 @@ export default function Connexion() {
               onChange={e => setEmail(e.target.value)}
               required
               autoComplete="email"
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30 transition"
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30 transition"
             />
           </div>
           <div>
@@ -65,14 +65,14 @@ export default function Connexion() {
               onChange={e => setMotDePasse(e.target.value)}
               required
               autoComplete="current-password"
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30 transition"
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30 transition"
             />
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-bleu text-white py-3 rounded-xl font-semibold hover:bg-bleu-dark transition flex items-center justify-center gap-2 disabled:opacity-60"
+            className="w-full bg-orange text-white py-3 rounded-xl font-semibold hover:bg-orange-dark transition flex items-center justify-center gap-2 disabled:opacity-60"
           >
             {loading ? <Loader size={18} className="animate-spin" /> : <LogIn size={18} />}
             {loading ? 'Connexion...' : 'Se connecter'}

@@ -78,7 +78,7 @@ export default function AdminProduits() {
       <AdminNav />
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-bold text-texte">Produits</h1>
-        <button onClick={ouvrirNouveauProduit} className="flex items-center gap-1 bg-bleu text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-bleu-dark transition">
+        <button onClick={ouvrirNouveauProduit} className="flex items-center gap-1 bg-orange text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-orange-dark transition">
           <Plus size={16} /> Ajouter
         </button>
       </div>
@@ -92,14 +92,14 @@ export default function AdminProduits() {
             }
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-texte text-sm truncate">{p.nom}</p>
-              <p className="text-bleu font-bold text-sm">{p.prix.toLocaleString()} FCFA</p>
+              <p className="text-orange font-bold text-sm">{p.prix.toLocaleString()} FCFA</p>
               {p.categorie && <span className="text-xs text-gray-400">{p.categorie}</span>}
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={() => toggleActif(p)} className="text-gray-400 hover:text-bleu transition" title={p.actif ? 'Désactiver' : 'Activer'}>
+              <button onClick={() => toggleActif(p)} className="text-gray-400 hover:text-orange transition" title={p.actif ? 'Désactiver' : 'Activer'}>
                 {p.actif ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
-              <button onClick={() => ouvrirModifierProduit(p)} className="text-gray-400 hover:text-bleu transition"><Pencil size={18} /></button>
+              <button onClick={() => ouvrirModifierProduit(p)} className="text-gray-400 hover:text-orange transition"><Pencil size={18} /></button>
               <button onClick={() => handleDelete(p.id)} className="text-gray-400 hover:text-red-500 transition"><Trash2 size={18} /></button>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function AdminProduits() {
                     value={form[f.name]}
                     onChange={e => setForm(prev => ({ ...prev, [f.name]: e.target.value }))}
                     placeholder={f.placeholder}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30"
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30"
                   />
                 </div>
               ))}
@@ -138,7 +138,7 @@ export default function AdminProduits() {
                   value={form.description}
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   rows={3}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30 resize-none"
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30 resize-none"
                 />
               </div>
               <div>
@@ -147,13 +147,13 @@ export default function AdminProduits() {
                 {form.imageUrl && !fichierImage && <img src={form.imageUrl} className="mt-2 h-20 rounded-lg object-cover" />}
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={form.actif} onChange={e => setForm(f => ({ ...f, actif: e.target.checked }))} className="w-4 h-4 accent-bleu" />
+                <input type="checkbox" checked={form.actif} onChange={e => setForm(f => ({ ...f, actif: e.target.checked }))} className="w-4 h-4 accent-orange" />
                 <span className="text-sm text-texte">Produit visible (actif)</span>
               </label>
             </div>
             <div className="p-5 border-t flex gap-3">
               <button onClick={() => setModal(null)} className="flex-1 border border-gray-200 text-texte py-2.5 rounded-xl text-sm hover:bg-gray-50 transition">Annuler</button>
-              <button onClick={handleSave} disabled={loading} className="flex-1 bg-bleu text-white py-2.5 rounded-xl text-sm font-medium hover:bg-bleu-dark transition flex items-center justify-center gap-2 disabled:opacity-60">
+              <button onClick={handleSave} disabled={loading} className="flex-1 bg-orange text-white py-2.5 rounded-xl text-sm font-medium hover:bg-orange-dark transition flex items-center justify-center gap-2 disabled:opacity-60">
                 {loading ? <Loader size={16} className="animate-spin" /> : null}
                 {loading ? 'Sauvegarde...' : 'Sauvegarder'}
               </button>

@@ -90,7 +90,7 @@ export default function FormCommande() {
             <label className="block text-sm font-medium text-texte mb-1">Nom complet <span className="text-red-500">*</span></label>
             <input type="text" value={form.nom} onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
               placeholder="Ex: Koné Aminata"
-              className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30 transition ${errors.nom ? 'border-red-400' : 'border-gray-200'}`} />
+              className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30 transition ${errors.nom ? 'border-red-400' : 'border-gray-200'}`} />
             {errors.nom && <p className="text-red-500 text-xs mt-1">{errors.nom}</p>}
           </div>
 
@@ -98,14 +98,14 @@ export default function FormCommande() {
             <label className="block text-sm font-medium text-texte mb-1">Numéro de téléphone <span className="text-red-500">*</span></label>
             <input type="tel" value={form.telephone} onChange={e => setForm(f => ({ ...f, telephone: e.target.value }))}
               placeholder="Ex: 0700000000"
-              className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30 transition ${errors.telephone ? 'border-red-400' : 'border-gray-200'}`} />
+              className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30 transition ${errors.telephone ? 'border-red-400' : 'border-gray-200'}`} />
             {errors.telephone && <p className="text-red-500 text-xs mt-1">{errors.telephone}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-texte mb-1">Quartier / Commune <span className="text-red-500">*</span></label>
             <select value={form.quartierId} onChange={handleQuartierChange}
-              className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30 transition bg-white ${errors.quartier ? 'border-red-400' : 'border-gray-200'}`}>
+              className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30 transition bg-white ${errors.quartier ? 'border-red-400' : 'border-gray-200'}`}>
               <option value="">-- Choisir votre quartier --</option>
               {quartiers.map(q => (
                 <option key={q.id} value={q.id}>
@@ -120,14 +120,14 @@ export default function FormCommande() {
             <label className="block text-sm font-medium text-texte mb-1">Description / Point de repère</label>
             <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
               placeholder="Ex: Face à la pharmacie, 2ème maison bleue..." rows={3}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-bleu/30 transition resize-none" />
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30 transition resize-none" />
           </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-semibold text-texte text-sm">Ma position sur la carte</h2>
-            <button type="button" onClick={handleGeolocate} className="flex items-center gap-1 text-bleu text-xs hover:underline">
+            <button type="button" onClick={handleGeolocate} className="flex items-center gap-1 text-orange text-xs hover:underline">
               <MapPin size={14} /> Ma position
             </button>
           </div>
@@ -154,7 +154,7 @@ export default function FormCommande() {
           </div>
           <div className="flex justify-between font-bold text-base pt-2 border-t">
             <span>Total à payer</span>
-            <span className="text-bleu">{totalAvecFrais.toLocaleString()} FCFA</span>
+            <span className="text-orange">{totalAvecFrais.toLocaleString()} FCFA</span>
           </div>
         </div>
 

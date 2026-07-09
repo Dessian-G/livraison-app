@@ -67,7 +67,7 @@ export default function LivreurCommandes() {
                 <div className={`w-2 h-2 rounded-full flex-shrink-0 ${isPrete ? 'bg-purple-500' : 'bg-orange-400'}`} />
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-texte text-sm">
-                    {c.numero && <span className="text-bleu mr-1">{c.numero}</span>}{c.client?.nom}
+                    {c.numero && <span className="text-orange mr-1">{c.numero}</span>}{c.client?.nom}
                   </p>
                   <p className="text-xs text-gray-400">{c.client?.quartier} · {formatDate(c.date)}</p>
                 </div>
@@ -82,7 +82,7 @@ export default function LivreurCommandes() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Phone size={14} className="text-gray-400" />
-                      <a href={`tel:${c.client?.telephone}`} className="text-bleu text-sm font-medium hover:underline">{c.client?.telephone}</a>
+                      <a href={`tel:${c.client?.telephone}`} className="text-orange text-sm font-medium hover:underline">{c.client?.telephone}</a>
                       <a href={`https://wa.me/${c.client?.telephone?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="ml-1 text-vert text-xs hover:underline">WhatsApp</a>
                     </div>
                     <div className="flex items-start gap-2">
@@ -104,7 +104,7 @@ export default function LivreurCommandes() {
                     ))}
                     <div className="flex justify-between font-bold text-sm pt-1 border-t border-gray-200 mt-1">
                       <span>Total</span>
-                      <span className="text-bleu">{c.total?.toLocaleString()} FCFA</span>
+                      <span className="text-orange">{c.total?.toLocaleString()} FCFA</span>
                     </div>
                   </div>
 
@@ -116,7 +116,7 @@ export default function LivreurCommandes() {
                         href={`https://www.google.com/maps?q=${c.client.position.lat},${c.client.position.lng}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-2 flex items-center gap-1 text-bleu text-sm hover:underline"
+                        className="mt-2 flex items-center gap-1 text-orange text-sm hover:underline"
                       >
                         <Navigation size={14} /> Itinéraire Google Maps
                       </a>
@@ -128,7 +128,7 @@ export default function LivreurCommandes() {
                     {isPrete && (
                       <button
                         onClick={() => prendreCommande(c.id)}
-                        className="flex-1 bg-bleu text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-bleu-dark transition flex items-center justify-center gap-1"
+                        className="flex-1 bg-orange text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-orange-dark transition flex items-center justify-center gap-1"
                       >
                         <Truck size={16} /> J'ai pris la commande
                       </button>

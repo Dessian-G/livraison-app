@@ -19,7 +19,7 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-bleu text-white shadow-md sticky top-0 z-50">
+    <header className="bg-orange text-white shadow-md sticky top-0 z-50">
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg tracking-tight truncate max-w-[220px]">
           <img

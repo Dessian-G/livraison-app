@@ -28,7 +28,7 @@ export default function DetailProduit() {
 
   if (loading) return (
     <div className="flex justify-center py-20">
-      <div className="w-8 h-8 border-4 border-bleu border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-orange border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
@@ -38,7 +38,7 @@ export default function DetailProduit() {
 
   return (
     <div>
-      <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-bleu mb-4 hover:underline text-sm">
+      <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-orange mb-4 hover:underline text-sm">
         <ArrowLeft size={16} /> Retour
       </button>
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -51,19 +51,19 @@ export default function DetailProduit() {
         )}
         <div className="p-5">
           {produit.categorie && (
-            <span className="text-xs bg-bleu/10 text-bleu px-2 py-0.5 rounded-full font-medium">{produit.categorie}</span>
+            <span className="text-xs bg-orange/10 text-orange px-2 py-0.5 rounded-full font-medium">{produit.categorie}</span>
           )}
           <h1 className="text-xl font-bold text-texte mt-2">{produit.nom}</h1>
           <p className="text-gray-500 mt-2 text-sm leading-relaxed">{produit.description}</p>
           <div className="flex items-center justify-between mt-5">
-            <span className="text-2xl font-bold text-bleu">{produit.prix.toLocaleString()} FCFA</span>
+            <span className="text-2xl font-bold text-orange">{produit.prix.toLocaleString()} FCFA</span>
             {produit.stock !== null && (
               <span className="text-xs text-gray-400">Stock : {produit.stock}</span>
             )}
           </div>
           <button
             onClick={handleAjouter}
-            className={`mt-5 w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white transition ${ajoute ? 'bg-vert' : 'bg-bleu hover:bg-bleu-dark'}`}
+            className={`mt-5 w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white transition ${ajoute ? 'bg-vert' : 'bg-orange hover:bg-orange-dark'}`}
           >
             <ShoppingCart size={18} />
             {ajoute ? 'Ajouté au panier !' : 'Ajouter au panier'}

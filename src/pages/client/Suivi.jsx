@@ -9,7 +9,7 @@ const ETAPES = [
   { statut: 'en_attente', label: 'Reçue', icon: Clock, color: 'text-yellow-500' },
   { statut: 'confirmée', label: 'Confirmée', icon: CheckCircle, color: 'text-blue-500' },
   { statut: 'prête_livraison', label: 'Prête', icon: Package, color: 'text-orange-500' },
-  { statut: 'en_livraison', label: 'En livraison', icon: Truck, color: 'text-bleu' },
+  { statut: 'en_livraison', label: 'En livraison', icon: Truck, color: 'text-orange' },
   { statut: 'livrée', label: 'Livrée', icon: CheckCircle, color: 'text-vert' },
 ]
 
@@ -50,14 +50,14 @@ export default function Suivi() {
 
   if (loading) return (
     <div className="flex justify-center py-20">
-      <div className="w-8 h-8 border-4 border-bleu border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-orange border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
   if (!commande) return (
     <div className="text-center py-20">
       <p className="text-gray-400 mb-4">Commande introuvable.</p>
-      <Link to="/" className="text-bleu hover:underline">Retour à l'accueil</Link>
+      <Link to="/" className="text-orange hover:underline">Retour à l'accueil</Link>
     </div>
   )
 
@@ -69,7 +69,7 @@ export default function Suivi() {
     <div className="max-w-md mx-auto space-y-4">
       <div className="text-center py-4">
         <p className="text-sm text-gray-400 mb-1">Commande</p>
-        <p className="text-2xl font-bold text-bleu">{commande.numero || commande.id.slice(0, 8).toUpperCase()}</p>
+        <p className="text-2xl font-bold text-orange">{commande.numero || commande.id.slice(0, 8).toUpperCase()}</p>
         <span className={`inline-block mt-2 text-sm px-3 py-1 rounded-full font-medium ${statutInfo.color}`}>
           {statutInfo.label}
         </span>
@@ -85,14 +85,14 @@ export default function Suivi() {
               const actuel = i === indexActuel
               return (
                 <div key={etape.statut} className="flex-1 flex flex-col items-center gap-1">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition ${passe ? 'bg-bleu' : 'bg-gray-100'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition ${passe ? 'bg-orange' : 'bg-gray-100'}`}>
                     <Icone size={16} className={passe ? 'text-white' : 'text-gray-400'} />
                   </div>
-                  <p className={`text-[10px] text-center leading-tight ${actuel ? 'text-bleu font-semibold' : passe ? 'text-gray-600' : 'text-gray-300'}`}>
+                  <p className={`text-[10px] text-center leading-tight ${actuel ? 'text-orange font-semibold' : passe ? 'text-gray-600' : 'text-gray-300'}`}>
                     {etape.label}
                   </p>
                   {i < ETAPES.length - 1 && (
-                    <div className={`absolute translate-x-4 translate-y-[-20px] h-0.5 w-full ${passe && i < indexActuel ? 'bg-bleu' : 'bg-gray-200'}`} style={{ display: 'none' }} />
+                    <div className={`absolute translate-x-4 translate-y-[-20px] h-0.5 w-full ${passe && i < indexActuel ? 'bg-orange' : 'bg-gray-200'}`} style={{ display: 'none' }} />
                   )}
                 </div>
               )
@@ -131,7 +131,7 @@ export default function Suivi() {
           </div>
           <div className="flex justify-between font-bold">
             <span>Total</span>
-            <span className="text-bleu">{commande.total?.toLocaleString()} FCFA</span>
+            <span className="text-orange">{commande.total?.toLocaleString()} FCFA</span>
           </div>
         </div>
       </div>
@@ -149,7 +149,7 @@ export default function Suivi() {
         <p className="text-center text-xs text-gray-400">Pour annuler, contactez-nous directement.</p>
       )}
 
-      <Link to="/" className="flex items-center justify-center gap-2 text-bleu text-sm hover:underline py-2">
+      <Link to="/" className="flex items-center justify-center gap-2 text-orange text-sm hover:underline py-2">
         <ShoppingBag size={16} /> Retour aux produits
       </Link>
     </div>

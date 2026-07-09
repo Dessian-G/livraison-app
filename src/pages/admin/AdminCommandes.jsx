@@ -60,7 +60,7 @@ export default function AdminCommandes() {
       <div className="flex gap-2 overflow-x-auto pb-2 mb-4">
         {FILTRES.map(f => (
           <button key={f} onClick={() => setFiltre(f)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition shrink-0 ${filtre === f ? 'bg-bleu text-white' : 'bg-white text-gray-500 hover:bg-bleu/5'}`}>
+            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition shrink-0 ${filtre === f ? 'bg-orange text-white' : 'bg-white text-gray-500 hover:bg-orange/5'}`}>
             {f === 'tous' ? 'Toutes' : STATUT_LABELS[f]?.label || f}
           </button>
         ))}
@@ -77,7 +77,7 @@ export default function AdminCommandes() {
                 className="w-full flex items-center justify-between p-4 text-left">
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-texte text-sm truncate">
-                    {c.numero && <span className="text-bleu mr-1">{c.numero}</span>}{c.client?.nom}
+                    {c.numero && <span className="text-orange mr-1">{c.numero}</span>}{c.client?.nom}
                   </p>
                   <p className="text-xs text-gray-400">{formatDate(c.date)} · {c.client?.quartier}</p>
                 </div>
@@ -85,7 +85,7 @@ export default function AdminCommandes() {
                   {!c.notifEnvoyee && c.statut === 'en_attente' && (
                     <span title="Notification non envoyée"><AlertCircle size={14} className="text-orange-400" /></span>
                   )}
-                  <span className="font-bold text-sm text-bleu">{c.total?.toLocaleString()} F</span>
+                  <span className="font-bold text-sm text-orange">{c.total?.toLocaleString()} F</span>
                   <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${st.color}`}>{st.label}</span>
                   {isOpen ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
                 </div>
@@ -115,7 +115,7 @@ export default function AdminCommandes() {
                       <CarteLeaflet position={c.client.position} centre={{ ...c.client.position, zoom: 15 }} readonly />
                       <a href={`https://www.google.com/maps?q=${c.client.position.lat},${c.client.position.lng}`}
                         target="_blank" rel="noreferrer"
-                        className="mt-2 flex items-center gap-1 text-bleu text-xs hover:underline">
+                        className="mt-2 flex items-center gap-1 text-orange text-xs hover:underline">
                         <Navigation size={12} /> Itinéraire Google Maps
                       </a>
                     </div>
@@ -127,7 +127,7 @@ export default function AdminCommandes() {
                       {c.articles?.map((a, i) => (
                         <div key={i} className="flex justify-between text-sm">
                           <span>{a.quantite}x {a.nom}</span>
-                          <span className="text-bleu font-medium">{(a.prix * a.quantite).toLocaleString()} FCFA</span>
+                          <span className="text-orange font-medium">{(a.prix * a.quantite).toLocaleString()} FCFA</span>
                         </div>
                       ))}
                     </div>
@@ -138,7 +138,7 @@ export default function AdminCommandes() {
                       </div>
                       <div className="flex justify-between font-bold">
                         <span>Total</span>
-                        <span className="text-bleu">{c.total?.toLocaleString()} FCFA</span>
+                        <span className="text-orange">{c.total?.toLocaleString()} FCFA</span>
                       </div>
                     </div>
                   </div>
