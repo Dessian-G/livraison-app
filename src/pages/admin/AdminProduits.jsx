@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, Timestamp, orderBy, query } from 'firebase/firestore'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { db, storage } from '../../firebase/config'
+import { db } from '../../firebase/config'
 import { Plus, Pencil, Trash2, Eye, EyeOff, X, Loader, Package } from 'lucide-react'
 import AdminNav from '../../components/AdminNav'
 
@@ -11,7 +10,6 @@ export default function AdminProduits() {
   const [produits, setProduits] = useState([])
   const [modal, setModal] = useState(null) // null | { mode: 'new'|'edit', data }
   const [form, setForm] = useState(VIDE)
-  const [fichierImage, setFichierImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -21,13 +19,11 @@ export default function AdminProduits() {
 
   function ouvrirNouveauProduit() {
     setForm(VIDE)
-    setFichierImage(null)
     setModal({ mode: 'new' })
   }
 
   function ouvrirModifierProduit(p) {
     setForm({ nom: p.nom, description: p.description, prix: String(p.prix), categorie: p.categorie || '', stock: p.stock !== null ? String(p.stock) : '', actif: p.actif, imageUrl: p.imageUrl || '' })
-    setFichierImage(null)
     setModal({ mode: 'edit', id: p.id })
   }
 
@@ -35,12 +31,6 @@ export default function AdminProduits() {
     if (!form.nom.trim() || !form.prix) return alert('Nom et prix obligatoires.')
     setLoading(true)
     try {
-      let imageUrl = form.imageUrl
-      if (fichierImage) {
-        const storRef = ref(storage, `produits/${Date.now()}_${fichierImage.name}`)
-        await uploadBytes(storRef, fichierImage)
-        imageUrl = await getDownloadURL(storRef)
-      }
       const data = {
         nom: form.nom.trim(),
         description: form.description.trim(),
@@ -48,7 +38,7 @@ export default function AdminProduits() {
         categorie: form.categorie.trim(),
         stock: form.stock === '' ? null : Number(form.stock),
         actif: form.actif,
-        imageUrl,
+        imageUrl: form.imageUrl.trim(),
       }
       if (modal.mode === 'new') {
         await addDoc(collection(db, 'produits'), { ...data, creeLe: Timestamp.now() })
@@ -142,9 +132,15 @@ export default function AdminProduits() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-texte mb-1">Image</label>
-                <input type="file" accept="image/*" onChange={e => setFichierImage(e.target.files[0])} className="text-sm" />
-                {form.imageUrl && !fichierImage && <img src={form.imageUrl} className="mt-2 h-20 rounded-lg object-cover" />}
+                <label className="block text-sm font-medium text-texte mb-1">Lien de l'image (optionnel)</label>
+                <input
+                  type="url"
+                  value={form.imageUrl}
+                  onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))}
+                  placeholder="https://..."
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30"
+                />
+                {form.imageUrl && <img src={form.imageUrl} className="mt-2 h-20 rounded-lg object-cover" />}
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.actif} onChange={e => setForm(f => ({ ...f, actif: e.target.checked }))} className="w-4 h-4 accent-orange" />

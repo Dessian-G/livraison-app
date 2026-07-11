@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react'
 import { doc, updateDoc, collection, onSnapshot, addDoc, deleteDoc, orderBy, query } from 'firebase/firestore'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { db, storage } from '../../firebase/config'
+import { db } from '../../firebase/config'
 import { useConfig } from '../../contexts/ConfigContext'
 import { Save, Loader, Plus, Trash2, Pencil, X, Send } from 'lucide-react'
 import AdminNav from '../../components/AdminNav'
 
 export default function AdminParametres() {
   const config = useConfig()
-  const [form, setForm] = useState({ nomBusiness: '', whatsappAdmin: '', callmebotApiKey: '', lat: '', lng: '', zoom: '' })
-  const [logoFile, setLogoFile] = useState(null)
+  const [form, setForm] = useState({ nomBusiness: '', whatsappAdmin: '', callmebotApiKey: '', lat: '', lng: '', zoom: '', logoUrl: '' })
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
 
@@ -31,6 +29,7 @@ export default function AdminParametres() {
       lat: String(config.carteCentre?.lat || 5.3599),
       lng: String(config.carteCentre?.lng || -3.9870),
       zoom: String(config.carteCentre?.zoom || 13),
+      logoUrl: config.logoUrl || '',
     })
   }, [config])
 
@@ -43,18 +42,12 @@ export default function AdminParametres() {
     e.preventDefault()
     setLoading(true)
     try {
-      let logoUrl = config.logoUrl || null
-      if (logoFile) {
-        const storRef = ref(storage, `config/logo_${Date.now()}`)
-        await uploadBytes(storRef, logoFile)
-        logoUrl = await getDownloadURL(storRef)
-      }
       await updateDoc(doc(db, 'parametres', 'config'), {
         nomBusiness: form.nomBusiness.trim(),
         whatsappAdmin: form.whatsappAdmin.trim(),
         callmebotApiKey: form.callmebotApiKey.trim(),
         carteCentre: { lat: parseFloat(form.lat), lng: parseFloat(form.lng), zoom: parseInt(form.zoom) },
-        logoUrl,
+        logoUrl: form.logoUrl.trim() || null,
       })
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -166,9 +159,15 @@ export default function AdminParametres() {
             {testResult && <p className="text-sm mt-2">{testResult}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-texte mb-1">Logo</label>
-            {config.logoUrl && <img src={config.logoUrl} alt="logo" className="h-16 rounded-lg mb-2 object-contain" />}
-            <input type="file" accept="image/*" onChange={e => setLogoFile(e.target.files[0])} className="text-sm" />
+            <label className="block text-sm font-medium text-texte mb-1">Lien du logo (optionnel)</label>
+            {form.logoUrl && <img src={form.logoUrl} alt="logo" className="h-16 rounded-lg mb-2 object-contain" />}
+            <input
+              type="url"
+              value={form.logoUrl}
+              onChange={e => setForm(f => ({ ...f, logoUrl: e.target.value }))}
+              placeholder="https://..."
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30"
+            />
           </div>
         </div>
 
