@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, Timestamp, orderBy, query } from 'firebase/firestore'
-import { db } from '../../firebase/config'
-import { Plus, Pencil, Trash2, Eye, EyeOff, X, Loader, Package } from 'lucide-react'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { db, storage } from '../../firebase/config'
+import { Plus, Pencil, Trash2, Eye, EyeOff, X, Loader, Package, ImagePlus } from 'lucide-react'
 import AdminNav from '../../components/AdminNav'
 
 const VIDE = { nom: '', description: '', prix: '', categorie: '', stock: '', actif: true, imageUrl: '' }
@@ -11,6 +12,8 @@ export default function AdminProduits() {
   const [modal, setModal] = useState(null) // null | { mode: 'new'|'edit', data }
   const [form, setForm] = useState(VIDE)
   const [loading, setLoading] = useState(false)
+  const [imagePreview, setImagePreview] = useState('')
+  const [uploadingImage, setUploadingImage] = useState(false)
 
   useEffect(() => {
     const q = query(collection(db, 'produits'), orderBy('creeLe', 'desc'))
@@ -19,16 +22,43 @@ export default function AdminProduits() {
 
   function ouvrirNouveauProduit() {
     setForm(VIDE)
+    setImagePreview('')
     setModal({ mode: 'new' })
   }
 
   function ouvrirModifierProduit(p) {
     setForm({ nom: p.nom, description: p.description, prix: String(p.prix), categorie: p.categorie || '', stock: p.stock !== null ? String(p.stock) : '', actif: p.actif, imageUrl: p.imageUrl || '' })
+    setImagePreview('')
     setModal({ mode: 'edit', id: p.id })
+  }
+
+  function fermerModal() {
+    setModal(null)
+    setImagePreview('')
+  }
+
+  async function handleImageChange(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImagePreview(URL.createObjectURL(file))
+    setUploadingImage(true)
+    try {
+      const chemin = `produits/${Date.now()}-${file.name}`
+      const imgRef = ref(storage, chemin)
+      await uploadBytes(imgRef, file)
+      const url = await getDownloadURL(imgRef)
+      setForm(f => ({ ...f, imageUrl: url }))
+    } catch (err) {
+      console.error(err)
+      alert("Erreur lors de l'envoi de l'image.")
+    } finally {
+      setUploadingImage(false)
+    }
   }
 
   async function handleSave() {
     if (!form.nom.trim() || !form.prix) return alert('Nom et prix obligatoires.')
+    if (uploadingImage) return alert("Attendez la fin de l'envoi de l'image.")
     setLoading(true)
     try {
       const data = {
@@ -45,7 +75,7 @@ export default function AdminProduits() {
       } else {
         await updateDoc(doc(db, 'produits', modal.id), data)
       }
-      setModal(null)
+      fermerModal()
     } catch (err) {
       console.error(err)
       alert('Erreur lors de la sauvegarde.')
@@ -102,7 +132,7 @@ export default function AdminProduits() {
           <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b">
               <h2 className="font-bold text-texte">{modal.mode === 'new' ? 'Nouveau produit' : 'Modifier le produit'}</h2>
-              <button onClick={() => setModal(null)}><X size={20} /></button>
+              <button onClick={fermerModal}><X size={20} /></button>
             </div>
             <div className="p-5 space-y-4">
               {[
@@ -132,15 +162,15 @@ export default function AdminProduits() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-texte mb-1">Lien de l'image (optionnel)</label>
-                <input
-                  type="url"
-                  value={form.imageUrl}
-                  onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))}
-                  placeholder="https://..."
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange/30"
-                />
-                {form.imageUrl && <img src={form.imageUrl} className="mt-2 h-20 rounded-lg object-cover" />}
+                <label className="block text-sm font-medium text-texte mb-1">Image du produit</label>
+                {(imagePreview || form.imageUrl) && (
+                  <img src={imagePreview || form.imageUrl} className="mb-2 h-20 rounded-lg object-cover" />
+                )}
+                <label className="flex items-center justify-center gap-2 border border-dashed border-gray-300 rounded-xl px-3 py-3 text-sm text-gray-500 cursor-pointer hover:border-orange hover:text-orange transition">
+                  {uploadingImage ? <Loader size={16} className="animate-spin" /> : <ImagePlus size={16} />}
+                  {uploadingImage ? 'Envoi en cours...' : (form.imageUrl || imagePreview) ? "Changer l'image" : 'Choisir une image depuis la galerie'}
+                  <input type="file" accept="image/*" onChange={handleImageChange} disabled={uploadingImage} className="hidden" />
+                </label>
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.actif} onChange={e => setForm(f => ({ ...f, actif: e.target.checked }))} className="w-4 h-4 accent-orange" />
@@ -148,8 +178,8 @@ export default function AdminProduits() {
               </label>
             </div>
             <div className="p-5 border-t flex gap-3">
-              <button onClick={() => setModal(null)} className="flex-1 border border-gray-200 text-texte py-2.5 rounded-xl text-sm hover:bg-gray-50 transition">Annuler</button>
-              <button onClick={handleSave} disabled={loading} className="flex-1 bg-orange text-white py-2.5 rounded-xl text-sm font-medium hover:bg-orange-dark transition flex items-center justify-center gap-2 disabled:opacity-60">
+              <button onClick={fermerModal} className="flex-1 border border-gray-200 text-texte py-2.5 rounded-xl text-sm hover:bg-gray-50 transition">Annuler</button>
+              <button onClick={handleSave} disabled={loading || uploadingImage} className="flex-1 bg-orange text-white py-2.5 rounded-xl text-sm font-medium hover:bg-orange-dark transition flex items-center justify-center gap-2 disabled:opacity-60">
                 {loading ? <Loader size={16} className="animate-spin" /> : null}
                 {loading ? 'Sauvegarde...' : 'Sauvegarder'}
               </button>
