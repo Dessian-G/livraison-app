@@ -13,27 +13,41 @@ service cloud.firestore {
     }
 
     // Produits : lecture publique, écriture admin ; exception : n'importe qui peut
-    // modifier uniquement le champ stock (décrément à la commande, incrément à l'annulation)
+    // modifier uniquement le champ stock (décrément à la commande, incrément à l'annulation).
+    // NOTE : ceci reste un point faible tant que la commande est créée côté client (voir
+    // services/commande.js) — un client peut appeler updateDoc directement sur stock sans
+    // passer par une vraie commande. La correction complète nécessite de déplacer la
+    // transaction de commande dans une Cloud Function (Admin SDK). Le garde-fou ci-dessous
+    // limite au moins la casse (valeur numérique non négative).
     match /produits/{id} {
       allow read: if true;
       allow create, delete: if isAdmin();
       allow update: if isAdmin()
-        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock']);
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock'])
+            && request.resource.data.stock is int
+            && request.resource.data.stock >= 0);
     }
 
-    // Commandes : création publique, lecture/maj admin et livreur, annulation client
+    // Commandes : création publique, lecture par ID publique (suivi client), mais le LISTING
+    // (toute la collection) est réservé à admin/livreur — sinon n'importe qui peut lister
+    // toutes les commandes (noms, téléphones, position GPS de tous les clients).
     match /commandes/{id} {
       allow create: if true;
-      allow read: if isAdmin() || isLivreur() || true; // lecture publique pour le suivi par ID
+      allow get: if true;
+      allow list: if isAdmin() || isLivreur();
       allow update: if isAdmin()
         || (isLivreur() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['statut', 'livreurId']))
         || (resource.data.statut == 'en_attente' && request.resource.data.statut == 'annulée');
       allow delete: if isAdmin();
     }
 
-    // Compteurs : lecture/écriture dans le cadre des transactions
+    // Compteurs : lecture publique, écriture publique dans le cadre des transactions de
+    // commande, mais bornée pour empêcher la corruption directe (valeur non numérique ou
+    // recul du compteur).
     match /compteurs/{id} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.resource.data.dernierNumero is int
+        && (!('dernierNumero' in resource.data) || request.resource.data.dernierNumero >= resource.data.dernierNumero);
     }
 
     // Quartiers : lecture publique, écriture admin
@@ -47,18 +61,25 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
-    // Utilisateurs : chacun peut lire son propre doc ; création autorisée (compte livreur)
+    // Utilisateurs : chacun peut lire son propre doc ; seul un admin peut en créer un
+    // (ex: AdminLivreurs.jsx crée le compte livreur pendant que l'admin est connecté).
+    // IMPORTANT : ne JAMAIS remettre "if request.auth != null" ici — ça permettrait à
+    // n'importe quel visiteur de créer un compte Firebase Auth (config publique par nature)
+    // puis d'écrire lui-même { role: "admin" } dans son propre document, en contournant
+    // entièrement l'UI (élévation de privilège). Le tout premier compte admin doit être créé
+    // manuellement dans la console Firebase (Admin SDK, contourne les rules).
     match /utilisateurs/{uid} {
       allow read: if request.auth != null && request.auth.uid == uid;
-      allow create: if request.auth != null;
+      allow create: if isAdmin();
       allow update, delete: if isAdmin();
     }
 
-    // Paramètres : lecture publique, création initiale libre, mise à jour admin
+    // Paramètres : lecture publique, écriture (y compris création) admin uniquement.
+    // parametres/config est déjà créé en prod ; AdminParametres.jsx ne fait que des
+    // updateDoc authentifiés admin, donc restreindre create ne casse rien.
     match /parametres/{id} {
       allow read: if true;
-      allow create: if true;
-      allow update, delete: if isAdmin();
+      allow create, update, delete: if isAdmin();
     }
   }
 }
